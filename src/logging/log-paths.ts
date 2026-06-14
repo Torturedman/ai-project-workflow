@@ -1,4 +1,5 @@
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
+import { getResourcePaths } from "../config/resource-paths.js";
 
 // File log names only keep portable ASCII segments so command/user text cannot create paths.
 const unsafeFilenameSegmentPattern = /[^a-z0-9]+/g;
@@ -23,6 +24,10 @@ function formatTimestamp(timestamp: Date): string {
 }
 
 export function getGlobalLogPath(globalHome: string): string {
+  if (basename(globalHome) === "global" && basename(dirname(globalHome)) === "resources") {
+    return getResourcePaths(dirname(dirname(globalHome))).globalLogFile;
+  }
+
   return join(globalHome, "logs", "ai-factory-global.jsonl");
 }
 

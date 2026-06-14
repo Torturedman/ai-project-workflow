@@ -4,4 +4,10 @@
 node_modules/
 dist/
 coverage/
+resources/database/*
+resources/global/*
+resources/logs/*
+!resources/database/.gitkeep
+!resources/global/.gitkeep
+!resources/logs/.gitkeep
 .DS_Store

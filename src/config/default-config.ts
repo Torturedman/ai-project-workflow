@@ -1,4 +1,5 @@
 import type { FactoryConfig } from "./schema.js";
+import { getDefaultGlobalHome } from "./resource-paths.js";
 
 export const defaultConfig: FactoryConfig = {
   // Controls which stack profile is selected when the user does not pass one.
@@ -11,7 +12,7 @@ export const defaultConfig: FactoryConfig = {
   paths: {
     // Global state location impacts config discovery, logs, and SQLite indexes.
     // Moving it can orphan previous run history unless migration is planned.
-    global_home: "~/.ai-factory",
+    global_home: getDefaultGlobalHome(),
     default_output_dir: "./generated",
   },
   execution: {

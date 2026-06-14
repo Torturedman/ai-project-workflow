@@ -3,7 +3,8 @@
 ## 1. 存储策略
 
 - 项目级权威状态：`<project-dir>/.ai-factory/**/*.json|md|yaml`。
-- 全局索引数据库：`~/.ai-factory/ai-factory.db`，SQLite。
+- 全局索引数据库：`<repo-root>/resources/database/ai-factory.db`，SQLite。
+- 仓库根目录 `resources/` 是资源类文件统一入口，但不得直接存放文件；数据库、全局日志、全局配置等资源必须进入分类子目录。
 - SQLite 用途：列出历史项目、查询运行记录、查询 Agent 调用和日志索引。
 - SQLite 不保存秘密内容，不保存完整 prompt 正文，只保存文件路径和摘要。
 - SQLite 缺失或损坏时，`ai-factory doctor --rebuild-index` 必须能扫描项目目录重建。
@@ -103,10 +104,13 @@ CREATE INDEX IF NOT EXISTS idx_artifacts_run_id ON artifacts(run_id);
 ## 3. 日志路径
 
 ```text
-~/.ai-factory/
+<repo-root>/resources/
+  database/
+    ai-factory.db
   logs/
     ai-factory-global.jsonl
-  ai-factory.db
+  global/
+    config.yaml
 
 <project-dir>/.ai-factory/logs/
   orchestrator.jsonl

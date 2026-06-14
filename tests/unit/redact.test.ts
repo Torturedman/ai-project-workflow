@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { createArtifactIndexRecord, hashFileSha256 } from "../../src/persistence/artifact-index.js";
 import { createJsonlLogger } from "../../src/logging/logger.js";
@@ -8,6 +9,7 @@ import { createAgentLogPaths, createCommandLogPaths, getGlobalLogPath } from "..
 import { redactText, redactValue } from "../../src/logging/redact.js";
 
 const tempDirs: string[] = [];
+const repoRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 
 async function createTempDir(): Promise<string> {
   const dir = await mkdtemp(join(tmpdir(), "ai-factory-logging-"));
@@ -73,11 +75,11 @@ describe("redactValue", () => {
 
 describe("log paths", () => {
   it("creates global, command, and agent log paths using safe filenames", () => {
-    const globalHome = "E:/factory-home";
+    const globalHome = join(repoRoot, "resources", "global");
     const projectDir = "E:/workspace/course-booking";
     const timestamp = new Date("2026-06-13T01:59:55.000Z");
 
-    expect(getGlobalLogPath(globalHome)).toBe(join(globalHome, "logs", "ai-factory-global.jsonl"));
+    expect(getGlobalLogPath(globalHome)).toBe(join(repoRoot, "resources", "logs", "ai-factory-global.jsonl"));
     expect(createCommandLogPaths(projectDir, "npm test -- auth", timestamp)).toEqual({
       stdout: join(projectDir, ".ai-factory", "logs", "commands", "npm-test-auth-20260613T015955Z.stdout.log"),
       stderr: join(projectDir, ".ai-factory", "logs", "commands", "npm-test-auth-20260613T015955Z.stderr.log"),

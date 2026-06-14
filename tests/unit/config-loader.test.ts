@@ -1,10 +1,12 @@
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadConfig } from "../../src/config/config-loader.js";
 
 const tempDirs: string[] = [];
+const repoRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 
 async function createTempProject(): Promise<string> {
   const projectDir = await mkdtemp(join(tmpdir(), "ai-factory-config-"));
@@ -33,7 +35,7 @@ describe("loadConfig", () => {
 
     expect(result.config.default_profile).toBe("node-next");
     expect(result.config.default_runner).toBe("mock");
-    expect(result.config.paths.global_home).toBe("~/.ai-factory");
+    expect(result.config.paths.global_home).toBe(join(repoRoot, "resources", "global"));
     expect(result.config.supported_profiles).toEqual([
       "node-next",
       "python-fastapi-react",
@@ -139,5 +141,26 @@ describe("loadConfig", () => {
       phase: "config",
     });
     expect(result.error.evidence?.config_file).toBe(missingGlobalConfig);
+  });
+
+  it("uses AI_FACTORY_HOME as the global config directory when it is provided", async () => {
+    const projectDir = await createTempProject();
+    const globalHome = join(projectDir, "resources", "global");
+
+    const result = await loadConfig({
+      projectDir,
+      env: {
+        AI_FACTORY_HOME: globalHome,
+        AI_FACTORY_CONFIG: undefined,
+      },
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(result.error.message);
+    }
+
+    expect(result.config.paths.global_home).toBe(globalHome);
+    expect(result.loaded_files).toEqual([]);
   });
 });

@@ -19,6 +19,16 @@ ai-project-workflow/
   .gitignore
   bin/
     ai-factory.js
+  resources/
+    database/
+      .gitkeep
+      ai-factory.db        # ignored runtime file
+    global/
+      .gitkeep
+      config.yaml          # optional local global config
+    logs/
+      .gitkeep
+      ai-factory-global.jsonl  # ignored runtime file
   src/
     cli/
       index.ts
@@ -147,6 +157,8 @@ ai-project-workflow/
 | `src/review` | Review Agent 调度、问题归属、返工投递 |
 | `src/testing` | lint/test/build/e2e/start 命令执行、端口与 HTTP 检查、验收报告 |
 | `src/templates` | 生成项目工程模板 |
+
+`resources/` 是仓库级资源统一入口，禁止直接把文件放在 `resources/` 根目录。必须按类型进入分类子目录，例如 `resources/database/`、`resources/logs/`、`resources/global/`。运行时生成的数据库和日志默认不提交，只保留分类目录占位文件。
 
 ## 3. 生成项目结构
 

@@ -7,7 +7,7 @@
 1. CLI flags。
 2. 环境变量。
 3. 项目配置：`<project-dir>/ai-factory.config.yaml`。
-4. 全局配置：`~/.ai-factory/config.yaml`。
+4. 全局配置：`<repo-root>/resources/global/config.yaml`。
 5. 内置默认配置：`src/config/default-config.ts`。
 
 ## 2. 项目配置格式
@@ -18,7 +18,7 @@ default_runner: codex-cli
 architecture_mode: standard
 
 paths:
-  global_home: ~/.ai-factory
+  global_home: ./resources/global
   default_output_dir: ./generated
 
 execution:
@@ -48,7 +48,7 @@ supported_profiles:
 
 | 变量 | 用途 | 默认值 |
 |---|---|---|
-| `AI_FACTORY_HOME` | 全局数据目录 | `~/.ai-factory` |
+| `AI_FACTORY_HOME` | 全局数据目录。未设置时使用仓库根目录 `resources/global`；设置后必须指向分类后的资源目录，不得直接指向 `resources` 根目录。 | `<repo-root>/resources/global` |
 | `AI_FACTORY_CONFIG` | 显式指定全局配置文件 | 空 |
 | `AI_FACTORY_DEFAULT_RUNNER` | 默认 Agent Runner | `mock` |
 | `AI_FACTORY_CODEX_BIN` | Codex CLI 可执行文件路径 | `codex` |

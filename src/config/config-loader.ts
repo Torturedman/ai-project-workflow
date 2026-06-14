@@ -1,9 +1,9 @@
 import { access, readFile } from "node:fs/promises";
-import { homedir } from "node:os";
 import { join } from "node:path";
 import { parse } from "yaml";
 import { ZodError } from "zod";
 import { defaultConfig } from "./default-config.js";
+import { getDefaultGlobalHome } from "./resource-paths.js";
 import type { FactoryErrorCode } from "../domain/errors.js";
 import { configFromEnv, type ConfigEnvironment } from "./env.js";
 import {
@@ -105,7 +105,11 @@ function defaultGlobalConfigPath(env: ConfigEnvironment): string {
     return env.AI_FACTORY_CONFIG;
   }
 
-  return join(homedir(), ".ai-factory", "config.yaml");
+  if (env.AI_FACTORY_HOME) {
+    return join(env.AI_FACTORY_HOME, "config.yaml");
+  }
+
+  return join(getDefaultGlobalHome(), "config.yaml");
 }
 
 function isConfigResult(value: ConfigLoadResult | PartialFactoryConfig): value is ConfigLoadResult {
