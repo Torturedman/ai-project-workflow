@@ -67,15 +67,22 @@ npm: >=11
 
 当前机器如果仍是 Node.js 20.x，只能进行文档工作，不能声称主控工程初始化验证通过。
 
-如果本机的 `nvm use 24.8.0` 因安装路径包含空格而失败，可以在当前 shell 直接前置 Node 24 目录：
+如果本机的 `nvm use 24.8.0` 因安装路径包含空格而失败，必须先把 `NVM_HOME`、`NVM_SYMLINK` 和系统 `Path` 迁移到无空格路径：
 
 ```powershell
-$env:PATH='E:\code tool\node.js\nvm\v24.8.0;' + $env:PATH
+NVM_HOME=E:\code-tool\nvm
+NVM_SYMLINK=E:\code-tool\nodejs
+Path includes E:\code-tool\nvm
+Path includes E:\code-tool\nodejs
+```
+
+迁移后重新打开 PowerShell，执行：
+
+```powershell
+nvm use 24.8.0
 node --version
 npm --version
 ```
-
-这只影响当前 shell，不修改系统默认配置。
 
 如果 `npm view` 或 `npm install` 报用户目录 cache 的 `EPERM`，不能直接判断为依赖版本冲突。必须先改用仓库内 cache 重试：
 
@@ -212,9 +219,12 @@ mvn package
 
 已验证：
 
+- `NVM_HOME`：`E:\code-tool\nvm`。
+- `NVM_SYMLINK`：`E:\code-tool\nodejs`。
+- 系统 `Path`：保留 `E:\code-tool\nvm` 和 `E:\code-tool\nodejs`。
 - `nvm list`：Node 24.8.0 已安装。
-- `nvm use 24.8.0`：在本机失败，原因是 nvm 安装路径包含空格，激活脚本把路径截断成了 `E:\code`。
-- `node --version`：`v24.8.0`，通过当前 shell PATH 前置 Node 24 目录后可用。
+- `nvm use 24.8.0`：已成功，`E:\code-tool\nodejs` 符号链接指向 `E:\code-tool\nvm\v24.8.0`。
+- `node --version`：`v24.8.0`。
 - `npm --version`：`11.6.0`。
 - `npm config get cache`：`E:\agent\ai-project-workflow\ai-project-workflow\.npm-cache`。
 - `npm view typescript dist-tags --json --cache .\.npm-cache`：仓库内 npm cache 可用；默认用户目录 npm cache 曾出现 `EPERM`。
@@ -231,8 +241,8 @@ mvn package
 
 环境判断：
 
-- 可以开始的任务：主控 TypeScript 工程初始化的环境准备、文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
+- 可以开始的任务：主控 TypeScript 工程初始化、文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
 - 暂不能开始的任务：`npm install`、`npm run build`、`npm test`、`node-next` 模板安装/构建/启动验证。
-- 阻塞原因：仓库尚无 `package.json` 等主控代码文件，所以还不能做真正的 npm 工程验证；不过 Node.js 24 LTS 和 npm 11 已经可在当前 shell 使用。
-- 需要安装或切换：无须再切换 Node 版本；继续保持当前 shell 的 Node 24 PATH 前置即可。
+- 阻塞原因：仓库尚无 `package.json` 等主控代码文件，所以还不能做真正的 npm 工程验证；Node.js 24 LTS 和 npm 11 已经通过 nvm symlink 成为系统可用版本。
+- 需要安装或切换：无须再切换 Node 版本；新 PowerShell 应直接识别 `node` 和 `npm`。
 - 最小验证命令：重新运行 `node --version`、`npm --version`、`npm view typescript dist-tags --json --cache .\.npm-cache`，等 `package.json` 生成后再开始 `npm install`、`npm run build`、`npm test`。
