@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { FactoryError } from "../domain/errors.js";
 
 export const architectureModeSchema = z.enum(["simple", "standard", "microservice"]);
 export const runnerSchema = z.enum([
@@ -64,15 +65,6 @@ export const partialFactoryConfigSchema = z.object({
 export type FactoryConfig = z.infer<typeof factoryConfigSchema>;
 export type PartialFactoryConfig = z.infer<typeof partialFactoryConfigSchema>;
 
-export interface FactoryConfigError {
-  code: "CONFIG_NOT_FOUND" | "CONFIG_INVALID";
-  message: string;
-  retryable: false;
-  phase: "config";
-  cause?: string;
-  evidence?: Record<string, string>;
-}
-
 export type ConfigLoadResult =
   | {
       ok: true;
@@ -81,5 +73,5 @@ export type ConfigLoadResult =
     }
   | {
       ok: false;
-      error: FactoryConfigError;
+      error: FactoryError;
     };

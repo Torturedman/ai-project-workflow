@@ -4,13 +4,13 @@ import { join } from "node:path";
 import { parse } from "yaml";
 import { ZodError } from "zod";
 import { defaultConfig } from "./default-config.js";
+import type { FactoryErrorCode } from "../domain/errors.js";
 import { configFromEnv, type ConfigEnvironment } from "./env.js";
 import {
   factoryConfigSchema,
   partialFactoryConfigSchema,
   type ConfigLoadResult,
   type FactoryConfig,
-  type FactoryConfigError,
   type PartialFactoryConfig,
 } from "./schema.js";
 
@@ -22,7 +22,7 @@ export interface LoadConfigOptions {
 }
 
 function configError(
-  code: FactoryConfigError["code"],
+  code: Extract<FactoryErrorCode, "CONFIG_NOT_FOUND" | "CONFIG_INVALID">,
   message: string,
   evidence?: Record<string, string>,
   cause?: string,

@@ -48,10 +48,10 @@
 - Create: `src/domain/startup.ts`
 - Test: `tests/unit/errors.test.ts`
 
-- [ ] 实现核心接口。
-- [ ] 实现 `FactoryErrorCode` 到退出码映射。
-- [ ] 实现 `toApiResponse(error)`。
-- [ ] 测试所有错误码都有退出码。
+- [x] 实现核心接口。
+- [x] 实现 `FactoryErrorCode` 到退出码映射。
+- [x] 实现 `toApiResponse(error)`。
+- [x] 测试所有错误码都有退出码。
 
 ## Task 4: `.ai-factory` 文件协议
 
