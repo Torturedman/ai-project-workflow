@@ -118,6 +118,8 @@ export async function loadConfig(options: LoadConfigOptions): Promise<ConfigLoad
   const projectConfigPath = join(options.projectDir, "ai-factory.config.yaml");
   const loadedFiles: string[] = [];
 
+  // Merge order is the configuration contract: defaults < global < project
+  // < environment < CLI. Reordering changes user-visible precedence.
   let config: PartialFactoryConfig = { ...defaultConfig };
 
   const shouldRequireGlobal = Boolean(options.globalConfigPath || env.AI_FACTORY_CONFIG);

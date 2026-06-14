@@ -14,6 +14,8 @@ export interface ConfigEnvironment {
 export function configFromEnv(env: ConfigEnvironment): PartialFactoryConfig {
   const config: PartialFactoryConfig = {};
 
+  // AI_FACTORY_HOME changes the global data root for logs, indexes, and
+  // cross-project state. Treat it as a broad-scope configuration override.
   if (env.AI_FACTORY_HOME) {
     config.paths = {
       global_home: env.AI_FACTORY_HOME,

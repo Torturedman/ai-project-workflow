@@ -47,6 +47,9 @@ export const factoryConfigSchema = z.object({
   supported_profiles: z.array(z.string().min(1)).nonempty(),
 });
 
+// Zod 4 removed the old deepPartial API, so config overrides keep an explicit
+// partial schema. When the full config schema changes, update this schema too.
+// Version note: https://zod.dev/v4/changelog#drops-deeppartial
 export const partialFactoryConfigSchema = z.object({
   default_profile: z.string().min(1).optional(),
   default_runner: runnerSchema.optional(),
