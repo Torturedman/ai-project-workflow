@@ -152,7 +152,6 @@ CREATE INDEX IF NOT EXISTS idx_artifacts_run_id ON artifacts(run_id);
 
 - `node-next`：PostgreSQL 16、Prisma、迁移命令 `npx prisma migrate deploy`、开发命令 `npx prisma migrate dev`。
 - `python-fastapi-react`：PostgreSQL 16、SQLAlchemy、Alembic、迁移命令 `alembic upgrade head`。
-- `java-spring-vue`：MySQL 8、MyBatis Plus、Flyway、迁移命令 `mvn -pl apps/backend flyway:migrate`。
+- `java-spring-vue`：MySQL 8.4 LTS、MyBatis Plus、Flyway、迁移命令在 `apps/backend` cwd 下执行 `mvn flyway:migrate`。如果模板生成 Maven 聚合根 `pom.xml`，才允许使用 `mvn -pl apps/backend ...`。
 
 生成项目的业务数据库 schema 由 Architect Agent 写入 `.ai-factory/architecture/data-model.md`，再由 Dev DB task 生成实际 migration。
-

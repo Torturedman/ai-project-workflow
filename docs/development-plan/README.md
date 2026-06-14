@@ -9,6 +9,7 @@
 
 这些约束适用于所有开发任务：
 
+- 后续 AI 写代码前必须读取 [ai-development-rules.md](ai-development-rules.md)。遇到依赖、命令、协议、测试、启动、数据库、日志、安全等问题时，必须说明原因并同步更新相关文档。
 - `stack_profile` 是生成项目的技术栈真相源。Agent 不允许自行替换包管理器、数据库、目录结构或启动命令。
 - `.ai-factory` 文件协议是每个生成项目的权威状态源。SQLite 只做索引和审计缓存。
 - 所有机器可读输出必须是 JSON 或 YAML，不从自然语言 stdout 中解析关键状态。
@@ -22,11 +23,13 @@
 
 | 当前任务 | 先读文档 | 再按需读取 |
 |---|---|---|
+| 任何代码开发、修复、调依赖、改命令 | [ai-development-rules.md](ai-development-rules.md) | 当前任务对应主题文档 |
 | 理解项目目标、范围、技术栈 | [overview.md](overview.md) | [implementation-tasks.md](implementation-tasks.md) |
 | 创建或调整目录结构 | [project-structure.md](project-structure.md) | [protocol.md](protocol.md) |
 | 写 CLI 命令、JSON 输出、退出码 | [cli-api.md](cli-api.md) | [errors.md](errors.md) |
 | 写 TypeScript 类型、接口、领域模型 | [interfaces.md](interfaces.md) | [state-machine.md](state-machine.md) |
 | 写配置加载、环境变量、Profile 注册 | [configuration.md](configuration.md) | [profile-templates.md](profile-templates.md) |
+| 写依赖、package.json、pyproject.toml、pom.xml、Dockerfile | [dependency-versions.md](dependency-versions.md) | [profile-templates.md](profile-templates.md) |
 | 写 `.ai-factory` 文件协议、报告格式 | [protocol.md](protocol.md) | [state-machine.md](state-machine.md) |
 | 写 Agent prompt、Runner、交接报告 | [agents-and-runners.md](agents-and-runners.md) | [protocol.md](protocol.md) |
 | 写 DAG 调度、workspace、集成、返工 | [execution-workflow.md](execution-workflow.md) | [state-machine.md](state-machine.md) |
@@ -62,10 +65,12 @@ Agent Runner 任务示例：
 ## 4. 文档清单
 
 - [overview.md](overview.md)：目标、阶段边界、技术栈、强制规则。
+- [ai-development-rules.md](ai-development-rules.md)：后续 AI 开发、修复、依赖变更和文档同步规则。
 - [project-structure.md](project-structure.md)：仓库结构和生成项目结构。
 - [cli-api.md](cli-api.md)：CLI 命令、返回规则、JSON 输出、退出码。
 - [interfaces.md](interfaces.md)：TypeScript 核心接口。
 - [configuration.md](configuration.md)：配置入口、环境变量、内置 Profile 策略。
+- [dependency-versions.md](dependency-versions.md)：运行时、框架、包版本和命令 cwd 锁定。
 - [protocol.md](protocol.md)：`.ai-factory` 文件协议、Agent 产物、报告格式。
 - [state-machine.md](state-machine.md)：项目状态、任务状态、blocked 报告。
 - [agents-and-runners.md](agents-and-runners.md)：Agent 角色、AgentRunner、prompt 和 report 规则。
@@ -76,4 +81,3 @@ Agent Runner 任务示例：
 - [profile-templates.md](profile-templates.md)：`node-next`、`python-fastapi-react`、`java-spring-vue` 模板要求。
 - [security.md](security.md)：命令执行安全、环境变量、敏感信息处理。
 - [implementation-tasks.md](implementation-tasks.md)：分阶段开发任务。
-

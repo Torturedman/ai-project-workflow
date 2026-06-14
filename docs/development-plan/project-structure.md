@@ -9,6 +9,7 @@ ai-project-workflow/
   ai-web-project-workflow-development-plan.md
   docs/
     development-plan/
+      dependency-versions.md
   package.json
   package-lock.json
   tsconfig.json
@@ -181,3 +182,4 @@ generated-project/
 
 不同 Profile 可以改变 `apps/backend` 和 `apps/frontend` 内部结构，但不得改变 `.ai-factory` 协议目录。
 
+`node-next` 是例外 Profile，使用 `apps/web` 承载前后端一体的 Next.js 应用。该例外必须写入 `stack-profile.json`，不能让 Agent 猜测目录。

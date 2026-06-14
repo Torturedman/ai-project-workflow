@@ -1,6 +1,6 @@
 # 分阶段开发任务
 
-每个任务完成前必须运行对应测试。涉及 JSON 输出、错误码、日志、启动证据的任务必须同时读取相关约束文档。
+每个任务开始前必须读取 [ai-development-rules.md](ai-development-rules.md)。每个任务完成前必须运行对应测试。涉及 JSON 输出、错误码、日志、启动证据、依赖版本、命令 cwd 的任务必须同时读取相关约束文档。
 
 ## Task 1: 工程初始化
 
@@ -12,7 +12,8 @@
 - Create: `src/cli/index.ts`
 - Create: `src/domain/api-response.ts`
 
-- [ ] 创建 Node.js + TypeScript 工程。
+- [ ] 创建 Node.js 24 LTS + TypeScript 6 工程。
+- [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定主控 `package.json` 依赖版本。
 - [ ] 配置 `npm run build` 输出到 `dist`。
 - [ ] 配置 `npm test` 使用 Vitest。
 - [ ] 配置 CLI 入口 `bin/ai-factory.js`。
@@ -97,6 +98,8 @@
 - Test: `tests/unit/profile-registry.test.ts`
 
 - [ ] 实现三个内置 Profile。
+- [ ] 按 [dependency-versions.md](dependency-versions.md) 为每个 Profile 声明运行时和依赖版本。
+- [ ] Profile 命令 schema 支持 `cwd` 和命令数组。
 - [ ] 实现 Profile schema 校验。
 - [ ] 实现基于用户需求关键词的 Profile 选择。
 - [ ] 用户明确指定 Node/Python/Java 时优先匹配。
@@ -219,6 +222,7 @@
 - Test: `tests/e2e/node-next-template.spec.ts`
 
 - [ ] 生成 Next.js 项目骨架。
+- [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定 Next.js、React、Prisma、Playwright 等版本。
 - [ ] 生成 Prisma schema 和 PostgreSQL docker-compose。
 - [ ] 生成登录注册基础模块。
 - [ ] 生成 OpenAPI docs 路由或 API docs 页面。
@@ -233,6 +237,8 @@
 - Test: `tests/unit/profile-template.test.ts`
 
 - [ ] 生成目录骨架和配置文件。
+- [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定 Python 和前端依赖版本。
+- [ ] Java Profile 实现前二次核验 Maven 依赖版本，并更新版本矩阵。
 - [ ] 生成 docker-compose。
 - [ ] 生成 healthcheck。
 - [ ] 生成基础 README。
@@ -252,4 +258,3 @@
 - [ ] 检查输出 JSON `ok=true`。
 - [ ] 检查 `.ai-factory/acceptance/acceptance-report.md` 存在。
 - [ ] 检查 `.ai-factory/startup/startup-evidence.json` 存在。
-

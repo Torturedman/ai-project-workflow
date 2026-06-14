@@ -6,7 +6,7 @@
 
 ## 2. 架构选择
 
-- 主控语言：TypeScript / Node.js 20 LTS。
+- 主控语言：TypeScript / Node.js 24 LTS。
 - CLI 框架：Commander。
 - 类型校验：Zod。
 - 子进程执行：Execa。
@@ -14,6 +14,8 @@
 - 测试：Vitest + Playwright。
 - 全局索引：SQLite。
 - MVP 默认 Profile：`node-next`。
+
+具体运行时、框架和依赖版本以 [dependency-versions.md](dependency-versions.md) 为准。Node.js 20 已于 2026-04-30 EOL，不再作为默认目标版本。
 
 ## 3. 必须实现
 
@@ -43,4 +45,3 @@
 - Agent 短生命周期，Orchestrator 长期运行。
 - Agent 之间不直接通信，所有交接通过文件、状态、报告和 workspace。
 - 用户确认计划后默认自动执行，除 `blocked` 外不再询问。
-

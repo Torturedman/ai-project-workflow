@@ -70,3 +70,22 @@ MVP 内置 Profile 定义在 `src/profiles/builtins`：
 
 Profile 缺少安装、lint、test、build、e2e、dev 命令时必须返回 `PROFILE_INVALID`。
 
+Profile 命令必须支持结构化 `cwd`：
+
+```yaml
+lint_command:
+  cwd: apps/web
+  command: npm run lint
+```
+
+多段命令必须使用数组，不允许把跨目录命令合并成一条 shell 字符串：
+
+```yaml
+install_commands:
+  - cwd: apps/backend
+    command: uv sync
+  - cwd: apps/frontend
+    command: npm install
+```
+
+运行时和依赖版本以 [dependency-versions.md](dependency-versions.md) 为准。
