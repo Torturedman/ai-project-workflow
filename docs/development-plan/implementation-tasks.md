@@ -80,12 +80,12 @@
 - Test: `tests/unit/redact.test.ts`
 - Test: `tests/integration/sqlite-store.test.ts`
 
-- [ ] 创建 SQLite migration。
-- [ ] 实现索引表写入。
-- [ ] 实现 Pino JSONL logger。
-- [ ] 实现日志脱敏。
-- [ ] 实现命令 stdout/stderr 日志路径生成。
-- [ ] 测试 API key、Bearer token、数据库密码会脱敏。
+- [x] 创建 SQLite migration。
+- [x] 实现索引表写入。
+- [x] 实现 Pino JSONL logger。
+- [x] 实现日志脱敏。
+- [x] 实现命令 stdout/stderr 日志路径生成。
+- [x] 测试 API key、Bearer token、数据库密码会脱敏。
 
 ## Task 6: Profile Registry
 
