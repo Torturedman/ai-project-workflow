@@ -62,11 +62,11 @@
 - Create: `src/persistence/file-store.ts`
 - Test: `tests/unit/file-store.test.ts`
 
-- [ ] 实现目录初始化。
-- [ ] 实现 JSON 原子写入：先写 `.tmp`，再 rename。
-- [ ] 实现 status、task graph、report 的读写。
-- [ ] 实现 schema 校验失败返回 `CONFIG_INVALID` 或 `TASK_GRAPH_INVALID`。
-- [ ] 测试重复初始化不破坏已有文件。
+- [x] 实现目录初始化。
+- [x] 实现 JSON 原子写入：先写 `.tmp`，再 rename。
+- [x] 实现 status、task graph、report 的读写。
+- [x] 实现 schema 校验失败返回 `CONFIG_INVALID` 或 `TASK_GRAPH_INVALID`。
+- [x] 测试重复初始化不破坏已有文件。
 
 ## Task 5: SQLite 索引和日志
 
