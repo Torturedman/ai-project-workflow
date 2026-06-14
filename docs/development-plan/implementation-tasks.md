@@ -29,11 +29,11 @@
 - Create: `src/config/config-loader.ts`
 - Test: `tests/unit/config-loader.test.ts`
 
-- [ ] 用 Zod 定义配置 schema。
-- [ ] 实现 CLI/env/project/global/default 五层优先级合并。
-- [ ] 实现 `AI_FACTORY_HOME` 和 `AI_FACTORY_DEFAULT_RUNNER`。
-- [ ] 验证无效 YAML 返回 `CONFIG_INVALID`。
-- [ ] 测试覆盖配置合并顺序。
+- [x] 用 Zod 定义配置 schema。
+- [x] 实现 CLI/env/project/global/default 五层优先级合并。
+- [x] 实现 `AI_FACTORY_HOME` 和 `AI_FACTORY_DEFAULT_RUNNER`。
+- [x] 验证无效 YAML 返回 `CONFIG_INVALID`。
+- [x] 测试覆盖配置合并顺序。
 
 ## Task 3: Domain 类型和错误码
 

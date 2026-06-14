@@ -238,11 +238,16 @@ mvn package
 - `docker compose version`：Docker Compose v5.1.1。
 - `java -version`：Java 21.0.5 LTS。
 - `mvn --version`：Apache Maven 3.9.9。
+- `npm install`：已使用仓库内 `.npm-cache` 完成，依赖无新增安装问题。
+- `npm run lint`：通过。
+- `npm run build`：通过。
+- `npm test`：通过，3 个测试文件 6 个测试通过。
+- `node dist/cli/index.js --help`：通过，能输出 `doctor` 和 `profiles` 命令。
 
 环境判断：
 
-- 可以开始的任务：主控 TypeScript 工程初始化、文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
-- 暂不能开始的任务：`npm install`、`npm run build`、`npm test`、`node-next` 模板安装/构建/启动验证。
-- 阻塞原因：仓库尚无 `package.json` 等主控代码文件，所以还不能做真正的 npm 工程验证；Node.js 24 LTS 和 npm 11 已经通过 nvm symlink 成为系统可用版本。
+- 可以开始的任务：Task 3 Domain 类型和错误码、后续主控 TypeScript 开发、文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
+- 暂不能开始的任务：`node-next` 模板安装/构建/启动验证。
+- 阻塞原因：`node-next` 模板尚未实现；当前只能验证主控 CLI 和配置系统。
 - 需要安装或切换：无须再切换 Node 版本；新 PowerShell 应直接识别 `node` 和 `npm`。
-- 最小验证命令：重新运行 `node --version`、`npm --version`、`npm view typescript dist-tags --json --cache .\.npm-cache`，等 `package.json` 生成后再开始 `npm install`、`npm run build`、`npm test`。
+- 最小验证命令：`node --version`、`npm --version`、`.\.venv\Scripts\python.exe --version`、`npm install`、`npm run lint`、`npm run build`、`npm test`、`node dist/cli/index.js --help`。
