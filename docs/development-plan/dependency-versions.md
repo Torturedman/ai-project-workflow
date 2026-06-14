@@ -53,6 +53,7 @@
 | `@playwright/test` | `1.60.0` | E2E 测试 | npm stable dist-tag；避免 alpha/next |
 | `better-sqlite3` | `12.10.1` | SQLite 全局索引 | npm stable dist-tag；实现时需验证 Node 24 原生模块安装 |
 | ESLint | `9.39.4` | lint | ESLint 9 是成熟稳定主版本线 |
+| typescript-eslint | `8.61.0` | TypeScript lint parser 和规则集 | npm stable dist-tag；用于 ESLint 9 解析 TypeScript |
 | tsx | `4.22.4` | 开发期 TypeScript 执行 | npm stable dist-tag |
 
 主控 `package.json` 首次实现默认精确版本：
@@ -76,6 +77,7 @@
     "vitest": "3.2.6",
     "@playwright/test": "1.60.0",
     "eslint": "9.39.4",
+    "typescript-eslint": "8.61.0",
     "tsx": "4.22.4"
   }
 }
@@ -215,6 +217,7 @@ npm view yaml dist-tags --json --cache .\.npm-cache
 npm view vitest dist-tags --json --cache .\.npm-cache
 npm view @playwright/test dist-tags --json --cache .\.npm-cache
 npm view better-sqlite3 dist-tags --json --cache .\.npm-cache
+npm view typescript-eslint dist-tags --json --cache .\.npm-cache
 npm view next dist-tags --json --cache .\.npm-cache
 npm view next@15.5.19 peerDependencies engines --json --cache .\.npm-cache
 npm view react dist-tags --json --cache .\.npm-cache

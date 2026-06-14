@@ -1,0 +1,35 @@
+{
+  "name": "ai-project-workflow",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "ai-factory": "./bin/ai-factory.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
+  },
+  "dependencies": {
+    "commander": "15.0.0",
+    "zod": "4.4.3",
+    "execa": "9.6.1",
+    "pino": "10.3.1",
+    "yaml": "2.9.0",
+    "better-sqlite3": "12.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3",
+    "vitest": "3.2.6",
+    "@playwright/test": "1.60.0",
+    "eslint": "9.39.4",
+    "typescript-eslint": "8.61.0",
+    "tsx": "4.22.4"
+  }
+}

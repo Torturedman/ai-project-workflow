@@ -12,13 +12,13 @@
 - Create: `src/cli/index.ts`
 - Create: `src/domain/api-response.ts`
 
-- [ ] 创建 Node.js 24 LTS + TypeScript 5.9 稳定线工程。
-- [ ] 执行 [environment-setup.md](environment-setup.md) 中的最小环境检查，确认当前 shell 使用 Node.js 24 LTS。
-- [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定主控 `package.json` 依赖版本。
-- [ ] 配置 `npm run build` 输出到 `dist`。
-- [ ] 配置 `npm test` 使用 Vitest。
-- [ ] 配置 CLI 入口 `bin/ai-factory.js`。
-- [ ] 验证：`npm run build` 成功，`node dist/cli/index.js --help` 输出命令帮助。
+- [x] 创建 Node.js 24 LTS + TypeScript 5.9 稳定线工程。
+- [x] 执行 [environment-setup.md](environment-setup.md) 中的最小环境检查，确认当前 shell 使用 Node.js 24 LTS。
+- [x] 按 [dependency-versions.md](dependency-versions.md) 锁定主控 `package.json` 依赖版本。
+- [x] 配置 `npm run build` 输出到 `dist`。
+- [x] 配置 `npm test` 使用 Vitest。
+- [x] 配置 CLI 入口 `bin/ai-factory.js`。
+- [x] 验证：`npm run build` 成功，`node dist/cli/index.js --help` 输出命令帮助。
 
 ## Task 2: 配置系统
 
