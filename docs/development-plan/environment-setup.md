@@ -9,6 +9,7 @@
 - 项目专用 Python 版本选择写入 `.python-version`。
 - `uv` cache 必须指向可写目录，推荐当前仓库内 `.uv-cache/`，避免 `C:\Users\27940\AppData\Local\uv\cache` 或 `E:\tmp\uv-cache` 权限问题。
 - `npm` cache 必须优先指向当前仓库内 `.npm-cache/`，避免用户目录 `C:\Users\27940\AppData\Local\npm-cache` 权限问题。
+- 根目录 `.npmrc` 必须把 `cache` 指向 `.\.npm-cache`，这样后续 npm install/view 默认就会落到仓库内 cache。
 - `.venv/`、`.uv-cache/` 和 `.npm-cache/` 是本地环境产物，后续实现 `.gitignore` 时必须忽略。
 - `.python-version` 是项目版本约束文件，创建后应纳入 Git。
 - Node.js 24 LTS 可以通过 nvm、fnm、Volta 或本地工具链切换，但实现前必须确认当前 shell 中 `node --version` 为 `v24.x`。
@@ -65,6 +66,16 @@ npm: >=11
 ```
 
 当前机器如果仍是 Node.js 20.x，只能进行文档工作，不能声称主控工程初始化验证通过。
+
+如果本机的 `nvm use 24.8.0` 因安装路径包含空格而失败，可以在当前 shell 直接前置 Node 24 目录：
+
+```powershell
+$env:PATH='E:\code tool\node.js\nvm\v24.8.0;' + $env:PATH
+node --version
+npm --version
+```
+
+这只影响当前 shell，不修改系统默认配置。
 
 如果 `npm view` 或 `npm install` 报用户目录 cache 的 `EPERM`，不能直接判断为依赖版本冲突。必须先改用仓库内 cache 重试：
 
@@ -201,8 +212,11 @@ mvn package
 
 已验证：
 
-- `node --version`：`v20.14.0`，未满足主控 Node.js 24 LTS 要求。
-- `npm --version`：`10.7.0`，未满足主控 npm `>=11 <12` 要求。
+- `nvm list`：Node 24.8.0 已安装。
+- `nvm use 24.8.0`：在本机失败，原因是 nvm 安装路径包含空格，激活脚本把路径截断成了 `E:\code`。
+- `node --version`：`v24.8.0`，通过当前 shell PATH 前置 Node 24 目录后可用。
+- `npm --version`：`11.6.0`。
+- `npm config get cache`：`E:\agent\ai-project-workflow\ai-project-workflow\.npm-cache`。
 - `npm view typescript dist-tags --json --cache .\.npm-cache`：仓库内 npm cache 可用；默认用户目录 npm cache 曾出现 `EPERM`。
 - `python --version`：`Python 3.11.2`，系统 Python 不作为本项目 Python Profile 依据。
 - `uv --version`：`uv 0.11.18`。
@@ -217,8 +231,8 @@ mvn package
 
 环境判断：
 
-- 可以开始的任务：文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
-- 暂不能开始的任务：主控 TypeScript 工程初始化、`node-next` 模板安装/构建/启动验证。
-- 阻塞原因：当前 shell 使用 Node.js 20.14.0 和 npm 10.7.0，未满足 Node.js 24 LTS 与 npm 11 要求；当前仓库尚无主控代码。
-- 需要安装或切换：将当前 shell 切换到 Node.js 24.x，并确保 npm 为 `>=11 <12`。
-- 最小验证命令：切换 Node 后重新运行 `node --version`、`npm --version`、`npm view typescript dist-tags --json --cache .\.npm-cache`，再开始 `npm install`、`npm run build`、`npm test`。
+- 可以开始的任务：主控 TypeScript 工程初始化的环境准备、文档工作、Python 3.12 目录级隔离验证、Java/Maven 版本层面的最小判断、依赖版本调研。
+- 暂不能开始的任务：`npm install`、`npm run build`、`npm test`、`node-next` 模板安装/构建/启动验证。
+- 阻塞原因：仓库尚无 `package.json` 等主控代码文件，所以还不能做真正的 npm 工程验证；不过 Node.js 24 LTS 和 npm 11 已经可在当前 shell 使用。
+- 需要安装或切换：无须再切换 Node 版本；继续保持当前 shell 的 Node 24 PATH 前置即可。
+- 最小验证命令：重新运行 `node --version`、`npm --version`、`npm view typescript dist-tags --json --cache .\.npm-cache`，等 `package.json` 生成后再开始 `npm install`、`npm run build`、`npm test`。
