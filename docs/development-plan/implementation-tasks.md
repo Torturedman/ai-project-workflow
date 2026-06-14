@@ -1,6 +1,6 @@
 # 分阶段开发任务
 
-每个任务开始前必须读取 [ai-development-rules.md](ai-development-rules.md)。每个任务完成前必须运行对应测试。涉及 JSON 输出、错误码、日志、启动证据、依赖版本、命令 cwd 的任务必须同时读取相关约束文档。
+每个任务开始前必须读取 [ai-development-rules.md](ai-development-rules.md)。涉及环境搭建或最小验证时必须读取 [environment-setup.md](environment-setup.md)。每个任务完成前必须运行对应测试。涉及 JSON 输出、错误码、日志、启动证据、依赖版本、命令 cwd 的任务必须同时读取相关约束文档。
 
 ## Task 1: 工程初始化
 
@@ -12,7 +12,8 @@
 - Create: `src/cli/index.ts`
 - Create: `src/domain/api-response.ts`
 
-- [ ] 创建 Node.js 24 LTS + TypeScript 6 工程。
+- [ ] 创建 Node.js 24 LTS + TypeScript 5.9 稳定线工程。
+- [ ] 执行 [environment-setup.md](environment-setup.md) 中的最小环境检查，确认当前 shell 使用 Node.js 24 LTS。
 - [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定主控 `package.json` 依赖版本。
 - [ ] 配置 `npm run build` 输出到 `dist`。
 - [ ] 配置 `npm test` 使用 Vitest。
@@ -238,6 +239,7 @@
 
 - [ ] 生成目录骨架和配置文件。
 - [ ] 按 [dependency-versions.md](dependency-versions.md) 锁定 Python 和前端依赖版本。
+- [ ] 通过 `.venv` 在当前目录隔离 Python 3.12.x，不修改系统 Python。
 - [ ] Java Profile 实现前二次核验 Maven 依赖版本，并更新版本矩阵。
 - [ ] 生成 docker-compose。
 - [ ] 生成 healthcheck。

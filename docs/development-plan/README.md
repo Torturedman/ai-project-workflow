@@ -18,6 +18,7 @@
 - CLI 的 `--json` 模式 stdout 只能输出一个 JSON 对象。进度和日志写 stderr 或日志文件。
 - 默认只在两个点打断用户：输入需求、确认计划。执行阶段除 `blocked` 外不再询问。
 - 命令执行必须避免 shell 字符串拼接用户输入，日志写入前必须脱敏。
+- 依赖版本采用稳定兼容基线，不追求最新主版本；选择时必须兼顾真实开源项目验证、官方模板、兼容矩阵和 peer dependency 证据。
 
 ## 2. 任务路由
 
@@ -30,6 +31,7 @@
 | 写 TypeScript 类型、接口、领域模型 | [interfaces.md](interfaces.md) | [state-machine.md](state-machine.md) |
 | 写配置加载、环境变量、Profile 注册 | [configuration.md](configuration.md) | [profile-templates.md](profile-templates.md) |
 | 写依赖、package.json、pyproject.toml、pom.xml、Dockerfile | [dependency-versions.md](dependency-versions.md) | [profile-templates.md](profile-templates.md) |
+| 判断或搭建本地环境、做最小代码验证 | [environment-setup.md](environment-setup.md) | [dependency-versions.md](dependency-versions.md) |
 | 写 `.ai-factory` 文件协议、报告格式 | [protocol.md](protocol.md) | [state-machine.md](state-machine.md) |
 | 写 Agent prompt、Runner、交接报告 | [agents-and-runners.md](agents-and-runners.md) | [protocol.md](protocol.md) |
 | 写 DAG 调度、workspace、集成、返工 | [execution-workflow.md](execution-workflow.md) | [state-machine.md](state-machine.md) |
@@ -71,6 +73,7 @@ Agent Runner 任务示例：
 - [interfaces.md](interfaces.md)：TypeScript 核心接口。
 - [configuration.md](configuration.md)：配置入口、环境变量、内置 Profile 策略。
 - [dependency-versions.md](dependency-versions.md)：运行时、框架、包版本和命令 cwd 锁定。
+- [environment-setup.md](environment-setup.md)：本地环境隔离、Python 3.12 `.venv`、Node 24 要求、npm cache 约束和最小验证。
 - [protocol.md](protocol.md)：`.ai-factory` 文件协议、Agent 产物、报告格式。
 - [state-machine.md](state-machine.md)：项目状态、任务状态、blocked 报告。
 - [agents-and-runners.md](agents-and-runners.md)：Agent 角色、AgentRunner、prompt 和 report 规则。

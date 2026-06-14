@@ -1,0 +1,7 @@
+.venv/
+.uv-cache/
+.npm-cache/
+node_modules/
+dist/
+coverage/
+.DS_Store
