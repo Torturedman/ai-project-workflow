@@ -88,4 +88,6 @@ install_commands:
     command: npm install
 ```
 
+Profile schema 的命令字段以顶层扁平字段为准：`install_command` / `install_commands`、`lint_command` / `lint_commands`、`test_command`、`build_command` / `build_commands`、`e2e_command`、`dev_command`。实现时必须归一化单数和复数字段；不得要求 `verification.*` 嵌套命令结构。
+
 运行时和依赖版本以 [dependency-versions.md](dependency-versions.md) 为准。

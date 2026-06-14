@@ -22,6 +22,11 @@ export interface ApiResponse<TData = unknown> {
 ```ts
 export type ArchitectureMode = "simple" | "standard" | "microservice";
 
+export interface ProfileCommand {
+  cwd: string;
+  command: string;
+}
+
 export interface StackProfile {
   id: string;
   display_name: string;
@@ -31,10 +36,6 @@ export interface StackProfile {
     framework: string;
     package_manager: string;
     root_dir: string;
-    dev_command: string;
-    build_command: string;
-    test_command: string;
-    lint_command: string;
     api_docs_path: string;
     healthcheck_path: string;
   };
@@ -43,32 +44,29 @@ export interface StackProfile {
     framework: string;
     package_manager: string;
     root_dir: string;
-    dev_command: string;
-    build_command: string;
-    test_command: string;
-    lint_command: string;
     port: number;
   };
+  install_command?: ProfileCommand;
+  install_commands?: ProfileCommand[];
+  lint_command?: ProfileCommand;
+  lint_commands?: ProfileCommand[];
+  test_command: ProfileCommand;
+  build_command?: ProfileCommand;
+  build_commands?: ProfileCommand[];
+  e2e_command: ProfileCommand;
+  dev_command: ProfileCommand;
   database: {
     engine: "postgresql" | "mysql" | "sqlite";
     version: string;
     orm: string;
     migration_command: string;
-    seed_command: string;
+    seed_command?: string;
     connection_env: string;
   };
   container: {
     compose_file: string;
     up_command: string;
-    down_command: string;
-  };
-  verification: {
-    install_command: string;
-    lint_command: string;
-    test_command: string;
-    build_command: string;
-    e2e_command: string;
-    dev_command: string;
+    down_command?: string;
   };
   template: {
     id: string;
@@ -257,4 +255,3 @@ export interface StartupEvidence {
   evidence_files: string[];
 }
 ```
-

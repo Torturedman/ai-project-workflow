@@ -4,17 +4,17 @@
 
 ## 1. 测试命令顺序
 
-Test/QA Agent 必须按 Profile 顺序执行：
+Test/QA Agent 必须先将 Profile 命令归一化为命令组，再按阶段顺序执行：
 
-1. `install_command`
-2. `lint_command`
+1. `install_command` / `install_commands`
+2. `lint_command` / `lint_commands`
 3. `test_command`
-4. `build_command`
+4. `build_command` / `build_commands`
 5. `e2e_command`
 
 所有命令必须写入 `.ai-factory/tests/test-report.json`，并保存 stdout/stderr 原始日志。
 
-Profile 命令必须读取结构化 `cwd`，不能在测试模块中自行拼接 `--prefix` 或猜测目录。依赖和运行时版本以 [dependency-versions.md](dependency-versions.md) 为准。
+单数命令按单元素数组处理，复数命令按 Profile 声明顺序逐条执行。Profile 命令必须读取结构化 `cwd`，不能在测试模块中自行拼接 `--prefix` 或猜测目录。依赖和运行时版本以 [dependency-versions.md](dependency-versions.md) 为准。
 
 ## 2. Test Report
 

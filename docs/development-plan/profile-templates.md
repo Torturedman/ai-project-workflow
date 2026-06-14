@@ -173,3 +173,5 @@ healthcheck_path: actuator/health
 - 必须能通过 Profile validate。
 - `node-next` 是 MVP 主路径，必须可安装、构建、启动。
 - 每条命令必须声明 `cwd`，禁止依赖调用方猜测工作目录。
+- Profile schema 以本文的顶层扁平命令字段为准。实现时必须把 `install_command` / `install_commands`、`lint_command` / `lint_commands`、`build_command` / `build_commands` 归一化为命令数组；不使用 `verification.*` 嵌套命令结构。
+- `database.seed_command` 和 `container.down_command` 是可选字段，缺失时不得返回 `PROFILE_INVALID`。

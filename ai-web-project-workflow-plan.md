@@ -491,20 +491,43 @@ decision/stack-profile.md
     "language": "python",
     "framework": "fastapi",
     "package_manager": "uv",
-    "test": "pytest",
-    "lint": "ruff check .",
-    "dev": "uvicorn app.main:app --reload"
+    "root_dir": "apps/backend",
+    "api_docs_path": "docs",
+    "healthcheck_path": "health"
   },
   "frontend": {
     "language": "typescript",
     "framework": "react",
     "package_manager": "npm",
-    "test": "npm test",
-    "lint": "npm run lint",
-    "dev": "npm run dev"
+    "root_dir": "apps/frontend",
+    "port": 5173
   },
-  "database": "postgresql",
-  "container": "docker-compose",
+  "install_commands": [
+    { "cwd": "apps/backend", "command": "uv sync" },
+    { "cwd": "apps/frontend", "command": "npm install" }
+  ],
+  "lint_commands": [
+    { "cwd": "apps/backend", "command": "uv run ruff check app tests" },
+    { "cwd": "apps/frontend", "command": "npm run lint" }
+  ],
+  "test_command": { "cwd": "apps/backend", "command": "uv run pytest" },
+  "build_commands": [
+    { "cwd": "apps/backend", "command": "uv run python -m compileall app" },
+    { "cwd": "apps/frontend", "command": "npm run build" }
+  ],
+  "e2e_command": { "cwd": ".", "command": "npm run e2e" },
+  "dev_command": { "cwd": ".", "command": "docker compose up" },
+  "database": {
+    "engine": "postgresql",
+    "version": "17",
+    "orm": "sqlalchemy",
+    "migration_command": "uv run alembic upgrade head",
+    "connection_env": "DATABASE_URL"
+  },
+  "container": {
+    "compose_file": "docker-compose.yml",
+    "up_command": "docker compose up"
+  },
   "api_contract": "openapi"
 }
 ```
@@ -619,6 +642,7 @@ Agent 之间不直接通信。所有通信通过文件和主控完成。
 
 ```text
 .ai-factory
+  status.json
   input
     user-request.md
   planning
@@ -642,9 +666,19 @@ Agent 之间不直接通信。所有通信通过文件和主控完成。
     error-codes.md
   tasks
     task-graph.json
-    dev-backend.task.md
-    dev-frontend.task.md
+    task-graph.md
+    task-files
+      dev-backend.task.md
+      dev-frontend.task.md
   agents
+    intake
+      status.json
+      memory.md
+      report.md
+    planner
+      status.json
+      memory.md
+      report.md
     dev-backend
       status.json
       memory.md
@@ -666,8 +700,14 @@ Agent 之间不直接通信。所有通信通过文件和主控完成。
   tests
     test-report.json
     e2e-report.md
+  startup
+    startup-evidence.json
+    startup-evidence.md
   acceptance
+    acceptance-report.json
     acceptance-report.md
+  blocked-report.json
+  blocked-report.md
   logs
     orchestrator.log
 ```
@@ -910,7 +950,7 @@ acceptance/acceptance-report.md
 - 数据库启动成功。
 - 核心 API 测试通过。
 - 核心 E2E 测试通过。
-- Review Agent 没有 high severity 问题。
+- Review Agent 没有 critical 或 high severity 问题。
 - 本地访问地址可打开。
 
 ## 15. 自动决策规则
@@ -1080,57 +1120,18 @@ AgentRunner
 
 ```yaml
 default_profile: node-next
+default_runner: codex-cli
+architecture_mode: standard
 
 supported_profiles:
-  node-next:
-    backend: next-api
-    frontend: next
-    database: postgresql
-    orm: prisma
-    package_manager: npm
-    frontend_port: 3000
-    backend_port: 3000
-    api_docs_path: api/docs
-    dev_command: npm run dev
-    build_command: npm run build
-    test_command: npm test
-    lint_command: npm run lint
-    e2e_command: npm run e2e
+  - node-next
+  - python-fastapi-react
+  - java-spring-vue
 
-  java-spring-vue:
-    backend: spring-boot
-    frontend: vue
-    database: mysql
-    orm: mybatis-plus
-    package_manager: maven
-    frontend_port: 5173
-    backend_port: 8080
-    api_docs_path: swagger-ui.html
-    dev_command: docker compose up
-    build_command: mvn package
-    test_command: mvn test
-    lint_command: mvn verify
-    e2e_command: npm run e2e
-
-  python-fastapi-react:
-    backend: fastapi
-    frontend: react
-    database: postgresql
-    orm: sqlalchemy
-    package_manager: uv
-    frontend_port: 5173
-    backend_port: 8000
-    api_docs_path: docs
-    dev_command: docker compose up
-    build_command: uv run python -m compileall app
-    test_command: pytest
-    lint_command: ruff check .
-    e2e_command: npm run e2e
-
-architecture_modes:
-  - simple
-  - standard
-  - microservice
+execution:
+  max_parallel_agents: 3
+  agent_timeout_seconds: 1800
+  command_timeout_seconds: 900
 
 retry:
   max_fix_rounds: 5
@@ -1139,6 +1140,8 @@ retry:
 approval:
   require_user_approval_before_execution: true
 ```
+
+项目配置只声明启用哪些 Profile。完整 `stack_profile` 字段、命令结构和依赖版本由内置 Profile 与开发约束文档统一定义，不能在项目配置中维护另一套命令 schema。
 
 ## 19. 第一阶段开发计划
 
@@ -1233,9 +1236,10 @@ approval:
 
 完成：
 
-- 执行 Profile 的 `lint_command`。
+- 将 Profile 的单数/复数命令字段归一化为命令组。
+- 执行 Profile 的 `lint_command` 或 `lint_commands`。
 - 执行 Profile 的 `test_command`。
-- 执行 Profile 的 `build_command`。
+- 执行 Profile 的 `build_command` 或 `build_commands`。
 - 执行 Profile 的 `e2e_command`。
 - 使用 Profile 的 `dev_command` 或 Docker Compose 启动。
 - 输出 Profile 声明的 localhost 地址和 API 文档地址。

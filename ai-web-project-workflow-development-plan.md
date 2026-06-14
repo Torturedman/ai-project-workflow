@@ -173,9 +173,10 @@ ai-project-workflow/
       profile-configs/
     e2e/
   docs/
-    protocol.md
-    profile-authoring.md
-    runner-adapters.md
+    development-plan/
+      protocol.md
+      profile-templates.md
+      agents-and-runners.md
 ```
 
 ### 2.1 目录职责
@@ -422,6 +423,11 @@ export interface ApiResponse<TData = unknown> {
 ```ts
 export type ArchitectureMode = "simple" | "standard" | "microservice";
 
+export interface ProfileCommand {
+  cwd: string;
+  command: string;
+}
+
 export interface StackProfile {
   id: string;
   display_name: string;
@@ -431,10 +437,6 @@ export interface StackProfile {
     framework: string;
     package_manager: string;
     root_dir: string;
-    dev_command: string;
-    build_command: string;
-    test_command: string;
-    lint_command: string;
     api_docs_path: string;
     healthcheck_path: string;
   };
@@ -443,32 +445,29 @@ export interface StackProfile {
     framework: string;
     package_manager: string;
     root_dir: string;
-    dev_command: string;
-    build_command: string;
-    test_command: string;
-    lint_command: string;
     port: number;
   };
+  install_command?: ProfileCommand;
+  install_commands?: ProfileCommand[];
+  lint_command?: ProfileCommand;
+  lint_commands?: ProfileCommand[];
+  test_command: ProfileCommand;
+  build_command?: ProfileCommand;
+  build_commands?: ProfileCommand[];
+  e2e_command: ProfileCommand;
+  dev_command: ProfileCommand;
   database: {
     engine: "postgresql" | "mysql" | "sqlite";
     version: string;
     orm: string;
     migration_command: string;
-    seed_command: string;
+    seed_command?: string;
     connection_env: string;
   };
   container: {
     compose_file: string;
     up_command: string;
-    down_command: string;
-  };
-  verification: {
-    install_command: string;
-    lint_command: string;
-    test_command: string;
-    build_command: string;
-    e2e_command: string;
-    dev_command: string;
+    down_command?: string;
   };
   template: {
     id: string;
@@ -1293,12 +1292,12 @@ Review Agent 输出：
 
 ### 14.2 Test
 
-Test/QA Agent 按 Profile 顺序执行：
+Test/QA Agent 先将 Profile 命令归一化为命令组，再按阶段顺序执行：
 
-1. `install_command`
-2. `lint_command`
+1. `install_command` / `install_commands`
+2. `lint_command` / `lint_commands`
 3. `test_command`
-4. `build_command`
+4. `build_command` / `build_commands`
 5. `e2e_command`
 
 所有命令写入 `.ai-factory/tests/test-report.json`。
@@ -1365,12 +1364,24 @@ docker-compose.yml
 命令：
 
 ```yaml
-install_command: npm install
-lint_command: npm run lint
-test_command: npm test
-build_command: npm run build
-e2e_command: npm run e2e
-dev_command: npm run dev
+install_command:
+  cwd: apps/web
+  command: npm install
+lint_command:
+  cwd: apps/web
+  command: npm run lint
+test_command:
+  cwd: apps/web
+  command: npm test
+build_command:
+  cwd: apps/web
+  command: npm run build
+e2e_command:
+  cwd: .
+  command: npm run e2e
+dev_command:
+  cwd: apps/web
+  command: npm run dev
 frontend_port: 3000
 backend_port: 3000
 api_docs_path: api/docs
