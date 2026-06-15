@@ -111,4 +111,48 @@ describe("SqliteStore", () => {
       store.close();
     }
   });
+
+  it("rejects child rows that reference missing parent rows", async () => {
+    const store = await SqliteStore.open(await createDbPath());
+    const now = "2026-06-14T00:00:00.000Z";
+
+    try {
+      expect(() =>
+        store.insertRun({
+          id: "run_orphan",
+          project_id: "missing_project",
+          command: "create",
+          raw_request: null,
+          status: "running",
+          config_snapshot_json: "{}",
+          started_at: now,
+          ended_at: null,
+          error_code: null,
+        }),
+      ).toThrow(/FOREIGN KEY constraint failed/);
+    } finally {
+      store.close();
+    }
+  });
+
+  it("rejects event rows that reference missing project, run, or task rows", async () => {
+    const store = await SqliteStore.open(await createDbPath());
+
+    try {
+      expect(() =>
+        store.insertEvent({
+          project_id: "missing_project",
+          run_id: "missing_run",
+          task_id: "missing_task",
+          level: "info",
+          event: "task.started",
+          message: "Started task",
+          data_json: null,
+          created_at: "2026-06-14T00:00:00.000Z",
+        }),
+      ).toThrow(/FOREIGN KEY constraint failed/);
+    } finally {
+      store.close();
+    }
+  });
 });

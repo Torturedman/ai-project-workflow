@@ -72,6 +72,9 @@ export class SqliteStore {
   static async open(dbPath: string): Promise<SqliteStore> {
     await mkdir(dirname(dbPath), { recursive: true });
     const db = new Database(dbPath);
+    // Foreign keys protect the global index from orphaned run/task/event rows.
+    // Turning this off makes audit queries look valid while pointing at missing parents.
+    db.pragma("foreign_keys = ON");
     const store = new SqliteStore(db);
     await store.applyMigrations();
     return store;

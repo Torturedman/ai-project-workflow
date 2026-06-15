@@ -65,7 +65,10 @@ CREATE TABLE IF NOT EXISTS events (
   event TEXT NOT NULL,
   message TEXT NOT NULL,
   data_json TEXT,
-  created_at TEXT NOT NULL
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (project_id) REFERENCES projects(id),
+  FOREIGN KEY (run_id) REFERENCES runs(id),
+  FOREIGN KEY (task_id) REFERENCES tasks(id)
 );
 
 CREATE TABLE IF NOT EXISTS artifacts (
