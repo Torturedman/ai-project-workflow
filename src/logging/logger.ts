@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import pino from "pino";
-import { redactValue } from "./redact.js";
+import { redactText, redactValue } from "./redact.js";
 
 export interface JsonlLogger {
   info(event: string, message: string, data?: unknown): void;
@@ -34,13 +34,13 @@ export async function createJsonlLogger(options: JsonlLoggerOptions): Promise<Js
 
   return {
     info(event, message, data) {
-      logger.info({ event, ...redactValue(data ?? {}) }, message);
+      logger.info({ event, ...redactValue(data ?? {}) }, redactText(message));
     },
     warn(event, message, data) {
-      logger.warn({ event, ...redactValue(data ?? {}) }, message);
+      logger.warn({ event, ...redactValue(data ?? {}) }, redactText(message));
     },
     error(event, message, data) {
-      logger.error({ event, ...redactValue(data ?? {}) }, message);
+      logger.error({ event, ...redactValue(data ?? {}) }, redactText(message));
     },
     flush() {
       logger.flush();

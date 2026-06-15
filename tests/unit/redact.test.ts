@@ -136,6 +136,23 @@ describe("createJsonlLogger", () => {
     expect(body).not.toContain("secret-token");
     expect(body).not.toContain("sk-proj-abcdefghijklmnopqrstuvwxyz");
   });
+
+  it("redacts sensitive values from JSONL message text", async () => {
+    const dir = await createTempDir();
+    const logFile = join(dir, "orchestrator.jsonl");
+    const logger = await createJsonlLogger({ logFile, level: "info" });
+
+    logger.info("task.failed", "Failed with Authorization: Bearer secret-token", {
+      task_id: "task_1",
+    });
+    logger.flush();
+
+    const body = await readFile(logFile, "utf8");
+    const entry = JSON.parse(body.trim()) as Record<string, unknown>;
+
+    expect(entry.message).toBe("Failed with Authorization: Bearer [REDACTED]");
+    expect(body).not.toContain("secret-token");
+  });
 });
 
 describe("artifact index", () => {

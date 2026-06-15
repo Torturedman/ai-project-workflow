@@ -150,6 +150,7 @@ CREATE INDEX IF NOT EXISTS idx_artifacts_run_id ON artifacts(run_id);
 - 项目日志默认随项目永久保留。
 - 全局日志默认保留 30 天。
 - 单个日志文件超过 50 MB 时滚动，命名为 `<name>.1.jsonl`。
+- JSONL 日志写入前必须同时脱敏 `message` 文本和结构化 `data`。
 - 脱敏规则必须覆盖：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、JWT、Bearer token、数据库 URL 密码、AWS/GitHub token 常见格式。
 - `report.md` 可以保留错误摘要，不允许写入完整密钥、完整 Cookie、完整 Authorization header。
 
