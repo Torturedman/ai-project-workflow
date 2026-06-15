@@ -7,7 +7,7 @@
     "ai-factory": "./bin/ai-factory.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node scripts/copy-build-assets.mjs",
     "test": "vitest run",
     "lint": "eslint ."
   },
